@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyse Stratégique : Microneedling Médical France</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Architecture logicielle : SPA (Single Page Application) avec routage par état JS -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #FDFBF7; color: #1E293B; margin: 0; }
+        .chart-container { position: relative; width: 100%; max-width: 800px; margin: auto; height: 320px; }
+        .nav-item.active { background-color: #F1F5F9; border-right: 4px solid #C89F7A; color: #0F172A; font-weight: 600; }
+        .pill-active { background-color: #1E293B; color: white; }
+        .opp-card { border-left: 4px solid #C89F7A; background-color: #FFFBF5; }
+        .view-section { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="flex flex-col md:flex-row h-screen overflow-hidden">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-full md:w-64 bg-white border-b md:border-r border-gray-200 flex flex-col z-10 shadow-sm">
+        <div class="p-6 border-b border-gray-100">
+            <h1 class="text-xl font-bold text-slate-800">Growth<span class="text-[#C89F7A]">Intel</span></h1>
+            <p class="text-[10px] text-gray-500 mt-1 uppercase tracking-widest font-bold">Microneedling France</p>
+        </div>
+        <nav class="p-4 flex md:flex-col space-x-2 md:space-x-0 md:space-y-1 overflow-x-auto">
+            <button onclick="showView('executive')" id="btn-executive" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm text-gray-600 hover:bg-gray-50 transition-all active">📊 Vue Exécutive</button>
+            <button onclick="showView('pillars')" id="btn-pillars" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm text-gray-600 hover:bg-gray-50 transition-all">🏛️ Les 10 Piliers</button>
+            <button onclick="showView('roadmap')" id="btn-roadmap" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm text-gray-600 hover:bg-gray-50 transition-all">🎯 Plan d'Action</button>
+        </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto p-6 md:p-10 bg-[#FDFBF7]">
+        
+        <!-- SECTION 1: EXECUTIVE SUMMARY -->
+        <div id="view-executive" class="view-section block">
+            <div class="max-w-5xl mx-auto">
+                <header class="mb-10">
+                    <h2 class="text-3xl font-bold text-slate-800 mb-2">Synthèse du Marché Médical</h2>
+                    <p class="text-gray-600 text-lg">Analyse de la croissance et opportunités 2024-2030.</p>
+                </header>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <div class="text-sm text-gray-500 mb-1 font-medium">Croissance (CAGR)</div>
+                        <div class="text-3xl font-bold text-slate-800">+11.5%</div>
+                        <div class="text-xs text-emerald-600 mt-2">↑ Projection nationale</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <div class="text-sm text-gray-500 mb-1 font-medium">Panier Moyen Cure</div>
+                        <div class="text-3xl font-bold text-slate-800">850 €</div>
+                        <div class="text-xs text-gray-400 mt-2">Basé sur 3-4 séances</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <div class="text-sm text-gray-500 mb-1 font-medium">Rétention Client</div>
+                        <div class="text-3xl font-bold text-slate-800">68%</div>
+                        <div class="text-xs text-emerald-600 mt-2">↑ Haute fidélité annuelle</div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="font-bold text-slate-800 mb-6">Trajectoire du Marché (Indice de valeur)</h3>
+                    <div class="chart-container">
+                        <canvas id="mainChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: THE 10 PILLARS -->
+        <div id="view-pillars" class="view-section hidden">
+            <div class="max-w-4xl mx-auto">
+                <header class="mb-8">
+                    <h2 class="text-3xl font-bold text-slate-800 mb-2">Les 10 Piliers Stratégiques</h2>
+                    <p class="text-gray-600">Scan complet de l'écosystème du microneedling en France.</p>
+                </header>
+                
+                <div id="pillars-container" class="space-y-6">
+                    <!-- Dynamically injected by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: ROADMAP -->
+        <div id="view-roadmap" class="view-section hidden">
+            <div class="max-w-5xl mx-auto">
+                <header class="mb-10">
+                    <h2 class="text-3xl font-bold text-slate-800 mb-2">Matrice de Déploiement</h2>
+                    <p class="text-gray-600">Actions prioritaires pour capturer la croissance.</p>
+                </header>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] tracking-widest font-bold">
+                            <tr>
+                                <th class="p-5">Domaine</th>
+                                <th class="p-5">Initiative Stratégique</th>
+                                <th class="p-5">Priorité</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-slate-700">
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="p-5 font-bold">Réglementaire</td>
+                                <td class="p-5">Audit des dispositifs (Marquage CE Médical) et assurance RCP.</td>
+                                <td class="p-5"><span class="px-2 py-1 bg-red-100 text-red-700 rounded text-[10px] font-bold">CRITIQUE</span></td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="p-5 font-bold">Marketing</td>
+                                <td class="p-5">Positionnement "Skin Quality" & Bio-stimulation naturelle.</td>
+                                <td class="p-5"><span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded text-[10px] font-bold">HAUTE</span></td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="p-5 font-bold">Innovation</td>
+                                <td class="p-5">Lancement Radiofréquence Microneedling (RF).</td>
+                                <td class="p-5"><span class="px-2 py-1 bg-amber-100 text-amber-700 rounded text-[10px] font-bold">MOYENNE</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // DATA MODEL: Les 10 Piliers Stratégiques
+        const pillarData = [
+            { t: "1. Réglementation", c: "Cadre strict : microneedling profond réservé aux médecins. Marquage CE Médical obligatoire.", o: "Créer une barrière à l'entrée par la communication sur la sécurité médicale vs instituts." },
+            { t: "2. Taille & Croissance", c: "Marché en accélération (8-12%/an). Forte demande pour le non-invasif.", o: "Préempter le SEO local avant la saturation par les réseaux nationaux." },
+            { t: "3. Concurrence", c: "Fragmentation élevée. Montée en puissance des cliniques type Lazeo.", o: "Différenciation par des 'Protocoles Signatures' exclusifs (ex: Glass Skin)." },
+            { t: "4. Demande & Cibles", c: "3 segments : Anti-âge (35-55), Acné (Gen Z), Alopécie (Hommes).", o: "Ciblage granulaire : TikTok pour la Gen Z, LinkedIn/Insta pour les CSP+." },
+            { t: "5. Offre & Valeur", c: "Passage du soin unique à la cure combinée (PRP, Exosomes).", o: "Maximiser la LTV (Lifetime Value) via des abonnements annuels de soin." },
+            { t: "6. Canaux & Réseaux", c: "Instagram/TikTok moteurs de découverte. Google Maps moteur de conversion.", o: "Automatiser la récolte d'avis Google pour dominer la recherche locale." },
+            { t: "7. Tendances & Tech", c: "Domination de la Radiofréquence (RF) Microneedling.", o: "Leapfrogging technologique : investir directement en RF pour capter le segment premium." },
+            { t: "8. Influence & Médias", c: "Vogue du 'Natural Glow'. Rejet des visages figés.", o: "Axe éditorial : Régénération cellulaire et capital jeunesse naturel." },
+            { t: "9. Économie Externe", c: "Résilience du secteur esthétique face à l'inflation (Lipstick effect).", o: "Proposer du paiement fractionné (3x/4x) pour lever le frein sur les cures premium." },
+            { t: "10. Métriques de Performance", c: "CAC (Coût acquisition) cible : 50-80€. Taux conversion cure : 60%.", o: "Pilotage par la donnée : suivre le ROI par canal d'acquisition en temps réel." }
+        ];
+
+        // ENGINE: Gestion de la navigation
+        function showView(viewId) {
+            // Masquer toutes les sections
+            document.querySelectorAll('.view-section').forEach(v => v.classList.add('hidden'));
+            document.getElementById('view-' + viewId).classList.remove('hidden');
+            
+            // Mise à jour de la sidebar
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('btn-' + viewId).classList.add('active');
+
+            // Trigger chart si retour sur executive
+            if (viewId === 'executive') initMainChart();
+        }
+
+        // VISUALIZATION: Graphique principal
+        let chartInstance = null;
+        function initMainChart() {
+            const ctx = document.getElementById('mainChart').getContext('2d');
+            if (chartInstance) chartInstance.destroy();
+            
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['2023', '2024', '2025', '2026', '2027', '2028'],
+                    datasets: [{
+                        label: 'Indice de Marché',
+                        data: [100, 114, 131, 152, 178, 205],
+                        borderColor: '#C89F7A',
+                        backgroundColor: 'rgba(200, 159, 122, 0.05)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#C89F7A',
+                        pointRadius: 5,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: false, grid: { color: '#f1f5f9' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        // Rendu des 10 Piliers
+        const container = document.getElementById('pillars-container');
+        pillarData.forEach(p => {
+            const card = document.createElement('div');
+            card.className = "bg-white p-6 md:p-8 rounded-2xl border border-gray-100 shadow-sm";
+            card.innerHTML = `
+                <h4 class="font-bold text-slate-800 text-xl mb-3">${p.t}</h4>
+                <p class="text-slate-500 mb-6 text-sm leading-relaxed">${p.c}</p>
+                <div class="opp-card p-5 rounded-r-xl">
+                    <div class="text-[10px] font-bold text-[#C89F7A] uppercase tracking-widest mb-2">Opportunité Stratégique</div>
+                    <p class="text-slate-800 font-semibold">${p.o}</p>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+        // Init au chargement
+        window.onload = initMainChart;
+    </script>
+</body>
+</html>
